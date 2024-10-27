@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Button, Alert } from "react-bootstrap";
+import {
+  Button,
+  TextField,
+  Alert,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 const UploadForm = ({ setAnalysisData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -18,6 +26,8 @@ const UploadForm = ({ setAnalysisData }) => {
     }
 
     setError(null);
+    setLoading(true); // Start loading
+
     const formData = new FormData();
     formData.append("file", selectedFile);
 
@@ -34,20 +44,37 @@ const UploadForm = ({ setAnalysisData }) => {
       setAnalysisData(response.data);
     } catch (err) {
       setError("An error occurred while uploading the file.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>Select APK File</Form.Label>
-        <Form.Control type="file" onChange={handleFileChange} />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Upload & Analyze
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <Typography variant="h6" gutterBottom>
+        Select APK File
+      </Typography>
+      <TextField
+        type="file"
+        fullWidth
+        onChange={handleFileChange}
+        inputProps={{ accept: ".apk" }}
+        sx={{ mb: 2 }}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? <CircularProgress size={24} /> : "Upload & Analyze"}
       </Button>
-    </Form>
+    </Box>
   );
 };
 
