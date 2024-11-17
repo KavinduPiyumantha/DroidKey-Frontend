@@ -12,6 +12,21 @@ import {
 const AnalysisResults = ({ data }) => {
   const categories = Object.keys(data.detailed_scores);
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Passed":
+      case "Enabled":
+      case "Disabled": // Assuming "Disabled" is positive in this context
+        return "green";
+      case "Failed":
+      case "Insecure":
+      case "Unknown":
+        return "red";
+      default:
+        return "black";
+    }
+  };
+
   return (
     <Card sx={{ mt: 4 }}>
       <CardContent>
@@ -43,8 +58,6 @@ const AnalysisResults = ({ data }) => {
               secondary={data.detailed_explanation.findings_summary}
             />
           </ListItem>
-
-          {/* Detailed information for each category */}
           {categories.map((category) => {
             const criteria = data.detailed_scores[category];
             return (
@@ -63,7 +76,14 @@ const AnalysisResults = ({ data }) => {
                       secondary={
                         <>
                           <Typography component="span">
-                            <strong>Status:</strong> {criterion.status}
+                            <strong>Status:</strong>{" "}
+                            <span
+                              style={{
+                                color: getStatusColor(criterion.status),
+                              }}
+                            >
+                              {criterion.status}
+                            </span>
                           </Typography>
                           <br />
                           <Typography component="span">
@@ -107,8 +127,6 @@ const AnalysisResults = ({ data }) => {
               </React.Fragment>
             );
           })}
-
-          {/* Overall Recommendations */}
           {data.detailed_explanation.recommendations && (
             <>
               <Divider />
