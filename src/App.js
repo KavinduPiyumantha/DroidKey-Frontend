@@ -10,7 +10,7 @@ function App() {
   return (
     <Container maxWidth="md" style={{ marginTop: "2em" }}>
       <Typography variant="h3" component="h1" gutterBottom>
-        Android Security Analysis
+        DroidKey Android Security Analysis Tool
       </Typography>
       <UploadForm setAnalysisData={setAnalysisData} />
       {analysisData && <AnalysisResults data={analysisData} />}

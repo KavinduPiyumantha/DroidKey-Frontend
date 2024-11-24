@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Paper,
 } from "@mui/material";
 
 const AnalysisResults = ({ data }) => {
@@ -22,6 +23,19 @@ const AnalysisResults = ({ data }) => {
       case "Insecure":
       case "Unknown":
         return "red";
+      default:
+        return "black";
+    }
+  };
+
+  const getKeyStatusColor = (status) => {
+    switch (status) {
+      case "Restricted":
+        return "green";
+      case "Unrestricted":
+        return "red";
+      case "Unknown":
+        return "orange";
       default:
         return "black";
     }
@@ -58,6 +72,8 @@ const AnalysisResults = ({ data }) => {
               secondary={data.detailed_explanation.findings_summary}
             />
           </ListItem>
+
+          {/* Detailed information for each category */}
           {categories.map((category) => {
             const criteria = data.detailed_scores[category];
             return (
@@ -65,14 +81,18 @@ const AnalysisResults = ({ data }) => {
                 <Divider />
                 <ListItem>
                   <ListItemText
-                    primary={category}
-                    primaryTypographyProps={{ variant: "h6" }}
+                    primary={
+                      <Typography variant="h6" style={{ fontWeight: "bold" }}>
+                        {category}
+                      </Typography>
+                    }
                   />
                 </ListItem>
                 {Object.entries(criteria).map(([criterionName, criterion]) => (
                   <ListItem key={criterionName} sx={{ pl: 4 }}>
                     <ListItemText
                       primary={criterionName}
+                      secondaryTypographyProps={{ component: "div" }}
                       secondary={
                         <>
                           <Typography component="span">
@@ -91,31 +111,55 @@ const AnalysisResults = ({ data }) => {
                             {typeof criterion.details === "string"
                               ? criterion.details
                               : Array.isArray(criterion.details)
-                              ? criterion.details
-                                  .map((item) =>
-                                    typeof item === "string"
-                                      ? item
-                                      : JSON.stringify(item)
-                                  )
-                                  .join(", ")
+                              ? criterion.details.map((item, index) => (
+                                  <div key={index}>
+                                    {typeof item === "string" ? (
+                                      item
+                                    ) : (
+                                      <>
+                                        {Object.entries(item).map(
+                                          ([key, value]) => (
+                                            <div key={key}>
+                                              <strong>{key}:</strong> {value}
+                                            </div>
+                                          )
+                                        )}
+                                      </>
+                                    )}
+                                  </div>
+                                ))
                               : JSON.stringify(criterion.details)}
                           </Typography>
+                          {/* Display hardcoded keys in a scrollable box */}
+                          {criterion.keys && criterion.keys.length > 0 && (
+                            <>
+                              <br />
+                              <Typography component="span">
+                                <strong>Hardcoded Keys:</strong>
+                              </Typography>
+                              <Paper
+                                variant="outlined"
+                                sx={{
+                                  maxHeight: 200,
+                                  overflow: "auto",
+                                  mt: 1,
+                                  p: 1,
+                                }}
+                              >
+                                {criterion.keys.map((keyItem, idx) => (
+                                  <Typography key={idx} variant="body2">
+                                    {keyItem.key}
+                                  </Typography>
+                                ))}
+                              </Paper>
+                            </>
+                          )}
                           {criterion.recommendation && (
                             <>
                               <br />
                               <Typography component="span">
                                 <strong>Recommendation:</strong>{" "}
-                                {typeof criterion.recommendation === "string"
-                                  ? criterion.recommendation
-                                  : Array.isArray(criterion.recommendation)
-                                  ? criterion.recommendation
-                                      .map((item) =>
-                                        typeof item === "string"
-                                          ? item
-                                          : JSON.stringify(item)
-                                      )
-                                      .join(", ")
-                                  : JSON.stringify(criterion.recommendation)}
+                                {criterion.recommendation}
                               </Typography>
                             </>
                           )}
@@ -127,31 +171,60 @@ const AnalysisResults = ({ data }) => {
               </React.Fragment>
             );
           })}
+
+          {/* Overall Recommendations */}
           {data.detailed_explanation.recommendations && (
             <>
               <Divider />
               <ListItem>
                 <ListItemText
-                  primary="Overall Recommendations"
-                  primaryTypographyProps={{ variant: "h6" }}
+                  primary={
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>
+                      Overall Recommendations
+                    </Typography>
+                  }
                 />
               </ListItem>
               {data.detailed_explanation.recommendations.map((rec, index) => (
                 <ListItem key={index} sx={{ pl: 4 }}>
                   <ListItemText
                     primary={rec.category}
+                    secondaryTypographyProps={{ component: "div" }}
                     secondary={
-                      typeof rec.recommendation === "string"
-                        ? rec.recommendation
-                        : Array.isArray(rec.recommendation)
-                        ? rec.recommendation
-                            .map((item) =>
-                              typeof item === "string"
-                                ? item
-                                : `${item.key} - ${item.status}: ${item.details}`
-                            )
-                            .join("\n")
-                        : JSON.stringify(rec.recommendation)
+                      <>
+                        {typeof rec.recommendation === "string"
+                          ? rec.recommendation
+                          : Array.isArray(rec.recommendation)
+                          ? rec.recommendation.map((item, idx) => (
+                              <div key={idx} style={{ marginBottom: "8px" }}>
+                                {typeof item === "string" ? (
+                                  item
+                                ) : (
+                                  <>
+                                    <Typography component="span">
+                                      <strong>Key:</strong> {item.key}
+                                    </Typography>
+                                    <br />
+                                    <Typography component="span">
+                                      <strong>Status:</strong>{" "}
+                                      <span
+                                        style={{
+                                          color: getKeyStatusColor(item.status),
+                                        }}
+                                      >
+                                        {item.status}
+                                      </span>
+                                    </Typography>
+                                    <br />
+                                    <Typography component="span">
+                                      <strong>Details:</strong> {item.details}
+                                    </Typography>
+                                  </>
+                                )}
+                              </div>
+                            ))
+                          : JSON.stringify(rec.recommendation)}
+                      </>
                     }
                   />
                 </ListItem>
