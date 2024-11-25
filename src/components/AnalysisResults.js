@@ -60,18 +60,18 @@ const AnalysisResults = ({ data }) => {
               secondary={`${data.final_score.toFixed(2)} / 100`}
             />
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <ListItemText
               primary="Total Trackers Found"
               secondary={data.total_trackers}
             />
-          </ListItem>
-          <ListItem>
+          </ListItem> */}
+          {/* <ListItem>
             <ListItemText
               primary="Findings Summary"
               secondary={data.detailed_explanation.findings_summary}
             />
-          </ListItem>
+          </ListItem> */}
 
           {/* Detailed information for each category */}
           {categories.map((category) => {
@@ -112,18 +112,35 @@ const AnalysisResults = ({ data }) => {
                               ? criterion.details
                               : Array.isArray(criterion.details)
                               ? criterion.details.map((item, index) => (
-                                  <div key={index}>
+                                  <div
+                                    key={index}
+                                    style={{ marginBottom: "8px" }}
+                                  >
                                     {typeof item === "string" ? (
                                       item
                                     ) : (
                                       <>
-                                        {Object.entries(item).map(
-                                          ([key, value]) => (
-                                            <div key={key}>
-                                              <strong>{key}:</strong> {value}
-                                            </div>
-                                          )
-                                        )}
+                                        <Typography component="span">
+                                          <strong>Key:</strong> {item.key}
+                                        </Typography>
+                                        <br />
+                                        <Typography component="span">
+                                          <strong>Status:</strong>{" "}
+                                          <span
+                                            style={{
+                                              color: getKeyStatusColor(
+                                                item.status
+                                              ),
+                                            }}
+                                          >
+                                            {item.status}
+                                          </span>
+                                        </Typography>
+                                        <br />
+                                        <Typography component="span">
+                                          <strong>Details:</strong>{" "}
+                                          {item.details}
+                                        </Typography>
                                       </>
                                     )}
                                   </div>
