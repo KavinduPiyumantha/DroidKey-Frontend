@@ -41,6 +41,17 @@ const AnalysisResults = ({ data }) => {
     }
   };
 
+  // Group recommendations by category to avoid duplication
+  const groupedRecommendations =
+    data.detailed_explanation.recommendations &&
+    data.detailed_explanation.recommendations.reduce((acc, rec) => {
+      if (!acc[rec.category]) {
+        acc[rec.category] = [];
+      }
+      acc[rec.category].push(rec.recommendation);
+      return acc;
+    }, {});
+
   return (
     <Card sx={{ mt: 4 }}>
       <CardContent>
@@ -60,18 +71,6 @@ const AnalysisResults = ({ data }) => {
               secondary={`${data.final_score.toFixed(2)} / 100`}
             />
           </ListItem>
-          {/* <ListItem>
-            <ListItemText
-              primary="Total Trackers Found"
-              secondary={data.total_trackers}
-            />
-          </ListItem> */}
-          {/* <ListItem>
-            <ListItemText
-              primary="Findings Summary"
-              secondary={data.detailed_explanation.findings_summary}
-            />
-          </ListItem> */}
 
           {/* Detailed information for each category */}
           {categories.map((category) => {
@@ -190,7 +189,7 @@ const AnalysisResults = ({ data }) => {
           })}
 
           {/* Overall Recommendations */}
-          {data.detailed_explanation.recommendations && (
+          {groupedRecommendations && (
             <>
               <Divider />
               <ListItem>
@@ -202,50 +201,70 @@ const AnalysisResults = ({ data }) => {
                   }
                 />
               </ListItem>
-              {data.detailed_explanation.recommendations.map((rec, index) => (
-                <ListItem key={index} sx={{ pl: 4 }}>
-                  <ListItemText
-                    primary={rec.category}
-                    secondaryTypographyProps={{ component: "div" }}
-                    secondary={
-                      <>
-                        {typeof rec.recommendation === "string"
-                          ? rec.recommendation
-                          : Array.isArray(rec.recommendation)
-                          ? rec.recommendation.map((item, idx) => (
-                              <div key={idx} style={{ marginBottom: "8px" }}>
-                                {typeof item === "string" ? (
-                                  item
-                                ) : (
-                                  <>
-                                    <Typography component="span">
-                                      <strong>Key:</strong> {item.key}
-                                    </Typography>
-                                    <br />
-                                    <Typography component="span">
-                                      <strong>Status:</strong>{" "}
-                                      <span
-                                        style={{
-                                          color: getKeyStatusColor(item.status),
-                                        }}
-                                      >
-                                        {item.status}
-                                      </span>
-                                    </Typography>
-                                    <br />
-                                    <Typography component="span">
-                                      <strong>Details:</strong> {item.details}
-                                    </Typography>
-                                  </>
-                                )}
-                              </div>
-                            ))
-                          : JSON.stringify(rec.recommendation)}
-                      </>
-                    }
-                  />
-                </ListItem>
-              ))}
+              {Object.entries(groupedRecommendations).map(
+                ([category, recommendations]) => (
+                  <React.Fragment key={category}>
+                    <ListItem sx={{ pl: 2 }}>
+                      <ListItemText
+                        primary={
+                          <Typography variant="subtitle1">
+                            {category}
+                          </Typography>
+                        }
+                      />
+                    </ListItem>
+                    {recommendations.map((recommendation, idx) => (
+                      <ListItem key={idx} sx={{ pl: 4 }}>
+                        <ListItemText
+                          secondaryTypographyProps={{ component: "div" }}
+                          secondary={
+                            <>
+                              {typeof recommendation === "string"
+                                ? recommendation
+                                : Array.isArray(recommendation)
+                                ? recommendation.map((item, index) => (
+                                    <div
+                                      key={index}
+                                      style={{ marginBottom: "8px" }}
+                                    >
+                                      {typeof item === "string" ? (
+                                        item
+                                      ) : (
+                                        <>
+                                          <Typography component="span">
+                                            <strong>Key:</strong> {item.key}
+                                          </Typography>
+                                          <br />
+                                          <Typography component="span">
+                                            <strong>Status:</strong>{" "}
+                                            <span
+                                              style={{
+                                                color: getKeyStatusColor(
+                                                  item.status
+                                                ),
+                                              }}
+                                            >
+                                              {item.status}
+                                            </span>
+                                          </Typography>
+                                          <br />
+                                          <Typography component="span">
+                                            <strong>Details:</strong>{" "}
+                                            {item.details}
+                                          </Typography>
+                                        </>
+                                      )}
+                                    </div>
+                                  ))
+                                : JSON.stringify(recommendation)}
+                            </>
+                          }
+                        />
+                      </ListItem>
+                    ))}
+                  </React.Fragment>
+                )
+              )}
             </>
           )}
         </List>
