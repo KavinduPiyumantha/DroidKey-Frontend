@@ -67,26 +67,29 @@ In the project directory, you can run:
 
 ## Running the Project
 
-1. **Clone the repository**:
+1. **Download the Code Repository**:  
+   Visit the following link to download the repository as a ZIP file:  
+   [Download DroidKey-Backend](https://anonymous.4open.science/api/repo/DroidKey-Backend-A51A/zip)
 
-   ```sh
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
+2. **Extract the ZIP File**:  
+   After downloading the ZIP file, extract its contents using any file extraction tool of your choice.
 
-2. **Install the dependencies**:
+3. **Navigate to the Project Directory**:  
+   Open the extracted folder and navigate to the `droidkey-backend` directory using cmd.
+
+4. **Install the dependencies**:
 
    ```sh
    npm install
    ```
 
-3. **Start the development server**:
+5. **Start the development server**:
 
    ```sh
    npm start
    ```
 
-4. **Open the app**:  
+6. **Open the app**:  
    Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
