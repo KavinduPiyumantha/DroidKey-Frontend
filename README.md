@@ -1,6 +1,36 @@
-# Getting Started with Create React App
+# DroidKey Android Security Analysis Tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web application for analyzing the security of Android APK files. It allows users to upload APK files and receive detailed security analysis results.
+
+---
+
+## Project Structure
+
+```
+.env
+.gitignore
+Dockerfile
+package.json
+public/
+    index.html
+    manifest.json
+    robots.txt
+README.md
+src/
+    App.css
+    App.js
+    App.test.js
+    components/
+        AnalysisResults.js
+        UploadForm.js
+    index.css
+    index.js
+    reportWebVitals.js
+    services/
+    setupTests.js
+```
+
+---
 
 ## Available Scripts
 
@@ -8,63 +38,111 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Runs the app in development mode.
+- Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- The page will reload when you make changes.
+- You may also see lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Launches the test runner in the interactive watch mode.
+- See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Builds the app for production to the `build` folder.
+- It correctly bundles React in production mode and optimizes the build for the best performance.
+- The build is minified, and the filenames include hashes.
+- Your app is ready to be deployed!
+- See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Note: This is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Copies all configuration files and dependencies into your project.
+- Allows full control over tools like Webpack, Babel, ESLint, etc.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Running the Project
+
+1. **Clone the repository**:
+
+   ```sh
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. **Install the dependencies**:
+
+   ```sh
+   npm install
+   ```
+
+3. **Start the development server**:
+
+   ```sh
+   npm start
+   ```
+
+4. **Open the app**:  
+   Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Docker Support
+
+You can also run the project using Docker:
+
+1. **Build the Docker image**:
+
+   ```sh
+   docker build -t droidkey-frontend .
+   ```
+
+2. **Run the Docker container**:
+
+   ```sh
+   docker run -p 80:80 droidkey-frontend
+   ```
+
+3. **Access the app**:  
+   Open [http://localhost](http://localhost) in your browser.
+
+---
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To learn more about this project or tools used:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
+- [React documentation](https://reactjs.org/)
+
+---
+
+## Advanced Topics
 
 ### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Learn more about [code splitting](https://facebook.github.io/create-react-app/docs/code-splitting).
 
 ### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Learn more about [analyzing the bundle size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size).
 
 ### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Learn more about [progressive web apps](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app).
 
 ### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Learn more about [advanced configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration).
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Learn more about [deployment](https://facebook.github.io/create-react-app/docs/deployment).
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Troubleshoot build errors by visiting [this guide](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify).
